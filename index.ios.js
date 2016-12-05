@@ -1,9 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -11,11 +5,13 @@ import {
   Text,
   View
 } from 'react-native';
+import dva, { connect } from 'dva/mobile';
+import exampleModel from './src/models/example';
+const app = dva();
 
-export default class ReactNativeDvaManager extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
+const App = () => {
+  return (
+    <View style={styles.container}>
         <Text style={styles.welcome}>
           Welcome to React Native!
         </Text>
@@ -26,10 +22,15 @@ export default class ReactNativeDvaManager extends Component {
           Press Cmd+R to reload,{'\n'}
           Cmd+D or shake for dev menu
         </Text>
-      </View>
-    );
-  }
-}
+    </View>
+  );
+};
+
+
+app.model(exampleModel);
+
+app.router(() => <App />);
+
 
 const styles = StyleSheet.create({
   container: {
@@ -50,4 +51,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('ReactNativeDvaManager', () => ReactNativeDvaManager);
+AppRegistry.registerComponent('ReactNativeDvaManager', () => app.start());
