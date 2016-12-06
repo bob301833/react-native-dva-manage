@@ -1,11 +1,15 @@
-import React, { PropTypes } from 'react';
-import { Router, Route, IndexRoute, Link } from 'dva/router';
-import IndexPage from './routes/IndexPage';
+import React from 'react';
+import { Scene, Router } from 'react-native-router-flux';
+import App from './App';
 
-export default function({ history }) {
+const RouterComponent = () => {
   return (
-    <Router history={history}>
-      <Route path="/" component={IndexPage} />
+    <Router sceneStyle={{ paddingTop: 65 }}>
+    <Scene key="app">
+      <Scene key="login" component={App} title="App" />
+    </Scene>
     </Router>
   );
 };
+
+export default RouterComponent;

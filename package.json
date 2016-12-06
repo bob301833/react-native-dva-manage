@@ -8,9 +8,11 @@
   },
   "dependencies": {
     "dva": "^1.1.0",
+    "eslint-config-rallycoding": "^3.1.0",
     "react": "15.4.1",
     "react-dom": "^15.4.1",
-    "react-native": "0.38.1"
+    "react-native": "0.38.1",
+    "react-native-router-flux": "^3.37.0"
   },
   "jest": {
     "preset": "react-native"
