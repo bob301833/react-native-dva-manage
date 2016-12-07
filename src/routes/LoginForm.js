@@ -72,10 +72,10 @@ const styles = {
   }
 };
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
   return {
     auth: state.auth,
   };
-}
+};
 
 export default connect(mapStateToProps)(LoginForm);
