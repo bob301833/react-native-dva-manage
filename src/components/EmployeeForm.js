@@ -50,7 +50,6 @@ const styles = {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state.employeeform);
   const { name, phone, shift } = state.employeeform;
 
   return { name, phone, shift };

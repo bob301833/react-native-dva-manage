@@ -19,6 +19,10 @@ class EmployeeEdit extends Component {
     });
     //this.props.employeeSave({ name, phone, shift, uid: this.props.employee.uid });
   }
+  onDeletePress() {
+    const { uid } = this.props.employee;
+    this.props.dispatch({ type: 'employeeform/employeeDelete', payload: uid })
+  }
   render() {
       return (
         <Card>
@@ -27,6 +31,12 @@ class EmployeeEdit extends Component {
           <WingBlank>
             <Button type="ghost" onClick={this.onButtonPress.bind(this)}>
               Save Changes
+            </Button>
+          </WingBlank>
+          <WhiteSpace />
+          <WingBlank>
+            <Button type="ghost" onClick={this.onDeletePress.bind(this)}>
+              Fire Employee
             </Button>
           </WingBlank>
           <WhiteSpace />

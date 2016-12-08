@@ -29,15 +29,21 @@ const employeeformModel = {
       }
     },
     *employeeCreate({ payload }, { call, put, select }) {
-        const { currentUser } = firebase.auth();
-        const currentUserUid = currentUser.uid;
-        const employeeData = yield select(({ employeeform }) => employeeform);
-        const { name, phone, shift } = employeeData;
-        const create = yield call(createEmployeesData, { name, phone, shift, currentUserUid });
-        if (create) {
-          yield put({ type: 'employeeSaveSuccess' });
-          yield Actions.employeeList({ type: 'reset' });
-        }
+      const { currentUser } = firebase.auth();
+      const currentUserUid = currentUser.uid;
+      const employeeData = yield select(({ employeeform }) => employeeform);
+      const { name, phone, shift } = employeeData;
+      const create = yield call(createEmployeesData, { name, phone, shift, currentUserUid });
+      if (create) {
+        yield put({ type: 'employeeSaveSuccess' });
+        yield Actions.employeeList({ type: 'reset' });
+      }
+    },
+    *employeeDelete({ payload: uid }, { call }) {
+      const { currentUser } = firebase.auth();
+      const currentUserUid = currentUser.uid;
+
+      yield call(deleteEmployeesData, { currentUserUid, uid });
     }
   },
 
@@ -54,18 +60,26 @@ const employeeformModel = {
   },
 };
 const saveEmployeesData = ({ name, phone, shift, currentUserUid, uid }) => {
-      return new Promise((resolve) => {
-        firebase.database().ref(`/users/${currentUserUid}/employees/${uid}`)
-          .set({ name, phone, shift })
-          .then(() => resolve('success'));
-      });
+  return new Promise((resolve) => {
+    firebase.database().ref(`/users/${currentUserUid}/employees/${uid}`)
+      .set({ name, phone, shift })
+      .then(() => resolve('success'));
+  });
 };
 
 const createEmployeesData = ({ name, phone, shift = 'Monday', currentUserUid }) => {
-      return new Promise((resolve) => {
-        firebase.database().ref(`/users/${currentUserUid}/employees`)
-          .push({ name, phone, shift })
-          .then(() => resolve('success'));
+  return new Promise((resolve) => {
+    firebase.database().ref(`/users/${currentUserUid}/employees`)
+      .push({ name, phone, shift })
+      .then(() => resolve('success'));
+  });
+};
+
+const deleteEmployeesData = ({ currentUserUid, uid }) => {
+    firebase.database().ref(`/users/${currentUserUid}/employees/${uid}`)
+      .remove()
+      .then(() => {
+        Actions.employeeList({ type: 'reset' });
       });
 };
 

@@ -14,6 +14,7 @@ const employeeModel = {
 
   effects: {
     *employeesFetch({ payload }, { call, put }) {
+      console.log('employeesFetch');
       const { currentUser } = firebase.auth();
       const employees = yield call(fetchEmployeesData, currentUser.uid);
       yield put({ type: 'employee_fetch_success', payload: employees });
