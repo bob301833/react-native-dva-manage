@@ -2,8 +2,9 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { Text, Picker } from 'react-native';
 import { Button, WhiteSpace, Card, WingBlank, List } from 'antd-mobile';
-import EmployeeForm from '../components/EmployeeForm';
 import { connect } from 'dva';
+import Communications from 'react-native-communications';
+import EmployeeForm from '../components/EmployeeForm';
 
 class EmployeeEdit extends Component {
   componentWillMount() {
@@ -23,6 +24,11 @@ class EmployeeEdit extends Component {
     const { uid } = this.props.employee;
     this.props.dispatch({ type: 'employeeform/employeeDelete', payload: uid })
   }
+  onTextPress() {
+    const { phone, shift } = this.props;
+
+    Communications.text(phone, `Your upcoming shift is on ${shift}`);
+  }
   render() {
       return (
         <Card>
@@ -31,6 +37,12 @@ class EmployeeEdit extends Component {
           <WingBlank>
             <Button type="ghost" onClick={this.onButtonPress.bind(this)}>
               Save Changes
+            </Button>
+          </WingBlank>
+          <WhiteSpace />
+          <WingBlank>
+            <Button type="ghost" onClick={this.onTextPress.bind(this)}>
+              Text Schedule
             </Button>
           </WingBlank>
           <WhiteSpace />
