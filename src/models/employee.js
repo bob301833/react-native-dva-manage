@@ -27,9 +27,9 @@ const employeeModel = {
     },
   },
 };
-const fetchEmployeesData = (uid) => {
+const fetchEmployeesData = (currentUserUid) => {
       return new Promise((resolve) => {
-        firebase.database().ref(`/users/${uid}/employees`)
+        firebase.database().ref(`/users/${currentUserUid}/employees`)
           .on('value', (snapshot) => {
             resolve(snapshot.val());
         });

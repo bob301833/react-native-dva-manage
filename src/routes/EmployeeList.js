@@ -3,11 +3,11 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { View, Text, TouchableWithoutFeedback } from 'react-native';
 import { ListView } from 'antd-mobile';
+import { Actions } from 'react-native-router-flux';
 
 class EmployeeList extends Component {
   componentWillMount() {
     this.props.dispatch({ type: 'employee/employeesFetch' });
-
     this.createDataSource(this.props);
   }
 
@@ -17,7 +17,6 @@ class EmployeeList extends Component {
     //this.props is still the old set of Props
     this.createDataSource(nextProps);
   }
-
   createDataSource({ employees }) {
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2
@@ -26,7 +25,7 @@ class EmployeeList extends Component {
     this.dataSource = ds.cloneWithRows(employees);
   }
   onRowPress(employee) {
-      console.log(employee);
+      Actions.employeeEdit({ employee });
   }
   render() {
      const separator = (sectionID, rowID) => (
