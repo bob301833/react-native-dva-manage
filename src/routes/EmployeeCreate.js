@@ -9,10 +9,11 @@ class EmployeeCreate extends Component {
   componentWillMount() {
     this.props.dispatch({ type: 'employeeform/employeeClear' });
   }
+
   onButtonPress() {
     this.props.dispatch({ type: 'employeeform/employeeCreate' });
   }
-      //this.props.employeeCreate({ name, phone, shift: shift || 'Monday' });
+
   render() {
     return (
       <Card>

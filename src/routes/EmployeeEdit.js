@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { Text, Picker } from 'react-native';
-import { Button, WhiteSpace, Card, WingBlank, List, Modal, Flex } from 'antd-mobile';
+import { Button, WhiteSpace, WingBlank, List, Modal, Flex } from 'antd-mobile';
 import { connect } from 'dva';
 import Communications from 'react-native-communications';
 import EmployeeForm from '../components/EmployeeForm';

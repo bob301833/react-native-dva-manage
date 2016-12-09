@@ -21,12 +21,9 @@ const employeeformModel = {
   },
 
 subscriptions: {
-  setup({ dispatch, history }) {
-  },
 },
 
 effects: {
-
     *employeeSave({ payload }, { call, put }) {
     const { name, phone, shift, uid } = payload;
     const { currentUser } = firebase.auth();

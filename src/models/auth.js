@@ -19,7 +19,7 @@ const authModel = {
   },
 
   subscriptions: {
-    setup({ dispatch, history }) {
+    setup({ dispatch }) {
       const config = {
         apiKey: 'AIzaSyAKPIDmexDmPWEX3fLYiUQa3gAc8jwZwZE',
         authDomain: 'manager-3c8b9.firebaseapp.com',
