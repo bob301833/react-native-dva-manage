@@ -31,12 +31,16 @@ const authModel = {
 
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
-          Actions.main();
           getList(user.uid, data => {
             dispatch({ type: 'employee/employeesFetch', payload: data });
           });
+          setTimeout(() => {
+            Actions.main();
+          }, 3000);
         } else {
-          Actions.auth();
+          setTimeout(() => {
+            Actions.auth();
+          }, 3000);
         }
       });
     },

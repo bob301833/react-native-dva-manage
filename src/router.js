@@ -5,10 +5,14 @@ import LoginForm from './routes/LoginForm';
 import EmployeeList from './routes/EmployeeList';
 import EmployeeCreate from './routes/EmployeeCreate';
 import EmployeeEdit from './routes/EmployeeEdit';
+import SplashScreen from './routes/SplashScreen';
 
 const RouterComponent = () => {
   return (
     <Router sceneStyle={{ paddingTop: 65 }}>
+      <Scene key="init">
+        <Scene key="SplashScreen" component={SplashScreen} />
+      </Scene>
       <Scene key="auth">
         <Scene key="login" component={LoginForm} title="Please Login" />
       </Scene>
