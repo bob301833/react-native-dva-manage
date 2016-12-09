@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { Text, Picker } from 'react-native';
-import { Button, WhiteSpace, Card, WingBlank, List } from 'antd-mobile';
+import { Button, WhiteSpace, Card, WingBlank, List, Modal, Flex } from 'antd-mobile';
 import { connect } from 'dva';
 import Communications from 'react-native-communications';
 import EmployeeForm from '../components/EmployeeForm';
@@ -20,18 +20,26 @@ class EmployeeEdit extends Component {
     });
     //this.props.employeeSave({ name, phone, shift, uid: this.props.employee.uid });
   }
-  onDeletePress() {
-    const { uid } = this.props.employee;
-    this.props.dispatch({ type: 'employeeform/employeeDelete', payload: uid })
-  }
+
   onTextPress() {
     const { phone, shift } = this.props;
 
     Communications.text(phone, `Your upcoming shift is on ${shift}`);
   }
+   onAccept() {
+    const { uid } = this.props.employee;
+    this.props.dispatch({ type: 'employeeform/employeeDelete', payload: uid });
+  }
+
+    onDecline() {
+      //this.setState({ showModal: false });
+      this.props.dispatch({ type: 'employeeform/hideModal' });
+    }
+
+
   render() {
       return (
-        <Card>
+        <List>
           <EmployeeForm />
           <WhiteSpace />
           <WingBlank>
@@ -47,21 +55,40 @@ class EmployeeEdit extends Component {
           </WingBlank>
           <WhiteSpace />
           <WingBlank>
-            <Button type="ghost" onClick={this.onDeletePress.bind(this)}>
+
+            <Button type="ghost" onClick={() => this.props.dispatch({ type: 'employeeform/showModal' })}>
               Fire Employee
             </Button>
           </WingBlank>
           <WhiteSpace />
-        </Card>
+          <Modal
+          style={{ height: 100, width: 350 }}
+          title="Are you sure you want to delete this?"
+          transparent
+          visible={this.props.modalVisible}
+          >
+          <WingBlank>
+            <WhiteSpace size="sm" />
+            <Flex>
+              <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
+                <Button type="ghost" inline onClick={this.onAccept.bind(this)}>Yes</Button>
+              </Flex.Item>
+              <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
+                <Button type="ghost" inline onClick={this.onDecline.bind(this)}>No</Button>
+              </Flex.Item>
+            </Flex>
+          </WingBlank>
+        </Modal>
+        </List>
 
       );
   }
 }
 
 const mapStateToProps = (state) => {
-  const { name, phone, shift } = state.employeeform;
+  const { name, phone, shift, modalVisible } = state.employeeform;
 
-  return { name, phone, shift };
+  return { name, phone, shift, modalVisible };
 };
 
 export default connect(mapStateToProps)(EmployeeEdit);

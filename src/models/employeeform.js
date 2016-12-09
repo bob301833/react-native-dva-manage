@@ -9,7 +9,8 @@ import {
 const INITIAL_STATE = {
   name: '',
   phone: '',
-  shift: ''
+  shift: '',
+  modalVisible: false
 };
 const employeeformModel = {
 
@@ -68,6 +69,12 @@ reducers: {
   employeeSaveSuccess() {
     return { ...INITIAL_STATE };
   },
+  showModal(state) {
+    return { ...state, modalVisible: true };
+  },
+  hideModal(state) {
+    return { ...state, modalVisible: false };
+  }
 },
 };
 
