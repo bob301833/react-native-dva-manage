@@ -43,9 +43,8 @@ const authModel = {
   },
 
   effects: {
-    *loginUser({ payload }, { call, put, select }) {
-      const email = yield select(({ auth }) => auth.email);
-      const password = yield select(({ auth }) => auth.password);
+    *loginUser({ payload }, { call, put }) {
+      const { email, password } = payload;
 
       yield put({ type: 'login_user' });
       const { user, err } = yield call(signIn, email, password);

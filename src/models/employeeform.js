@@ -34,11 +34,10 @@ effects: {
       yield Actions.employeeList({ type: 'reset' });
     }
   },
-    *employeeCreate({ payload }, { call, put, select }) {
+    *employeeCreate({ payload }, { call, put }) {
     const { currentUser } = firebase.auth();
     const currentUserUid = currentUser.uid;
-    const employeeData = yield select(({ employeeform }) => employeeform);
-    const { name, phone, shift } = employeeData;
+    const { name, phone, shift } = payload;
     const { err } = yield call(createEmployeesData, { name, phone, shift, currentUserUid });
     if (!err) {
       yield put({ type: 'employeeSaveSuccess' });

@@ -11,7 +11,11 @@ class EmployeeCreate extends Component {
   }
 
   onButtonPress() {
-    this.props.dispatch({ type: 'employeeform/employeeCreate' });
+    const { name, phone, shift } = this.props;
+    this.props.dispatch({
+      type: 'employeeform/employeeCreate',
+      payload: { name, phone, shift }
+    });
   }
 
   render() {

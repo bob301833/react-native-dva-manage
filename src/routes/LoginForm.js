@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Text, ScrollView } from 'react-native';
 import { InputItem, List, Button, WhiteSpace, WingBlank, ActivityIndicator, Card } from 'antd-mobile';
 import { connect } from 'dva';
@@ -16,14 +16,16 @@ const LoginForm = ({ dispatch, auth }) => {
         <Button
           onClick={() => dispatch({
             type: 'auth/loginUser',
+            payload: { email, password }
           })}
           type="ghost"
-        >
+          >
           Login
         </Button>
       </WingBlank>
     );
-  }
+  };
+
   return (
     <ScrollView
       style={{ flex: 1 }}
@@ -51,7 +53,7 @@ const LoginForm = ({ dispatch, auth }) => {
             payload: text,
           })}
           value={password}
-        >密碼</InputItem>
+          >密碼</InputItem>
         <Text style={styles.errorTextStyle}>
           {error}
         </Text>
