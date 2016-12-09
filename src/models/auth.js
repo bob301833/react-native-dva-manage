@@ -1,16 +1,20 @@
 import firebase from 'firebase';
 import { Actions } from 'react-native-router-flux';
 
+const INITIAL_STATE = {
+  email: '',
+  password: '',
+  user: null,
+  error: '',
+  loading: false
+};
+
 const authModel = {
 
   namespace: 'auth',
 
   state: {
-    email: '',
-    password: '',
-    user: null,
-    error: '',
-    loading: false
+    ...INITIAL_STATE
   },
 
   subscriptions: {
@@ -27,6 +31,9 @@ const authModel = {
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           Actions.main();
+          getList(user.uid, data => {
+            dispatch({ type: 'employee/employeesFetch', payload: data });
+          });
         } else {
           Actions.auth();
         }
@@ -37,7 +44,6 @@ const authModel = {
   effects: {
     *isLogin({ payload }, { select }) {
       const user = yield select(({ auth }) => auth.user);
-
       if (user) {
         Actions.main();
       } else {
@@ -71,7 +77,7 @@ const authModel = {
       return { ...state, loading: true, error: '' };
     },
     login_user_successs(state, { payload: user }) {
-      return { ...state, email: '', password: '', error: '', loading: false, user };
+      return { ...state, ...INITIAL_STATE, user };
     },
     login_user_fail(state) {
       return { ...state, error: 'Authentication Failed', password: '', loading: false };
@@ -87,6 +93,17 @@ const createUser = (email, password) => {
   return firebase.auth().createUserWithEmailAndPassword(email, password)
     .then(user => user)
     .catch(() => { return 'login_user_fail'; });
+};
+
+const getList = (currentUserUid, cb) => {
+  const ref = firebase.database().ref(`/users/${currentUserUid}/employees`);
+  const handler = snapshot => {
+      cb(snapshot.val());
+  };
+  ref.on('value', handler);
+  return () => {
+    ref.off('value', handler);
+  };
 };
 
 export default authModel;

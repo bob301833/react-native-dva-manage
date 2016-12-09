@@ -7,7 +7,7 @@ import { Actions } from 'react-native-router-flux';
 
 class EmployeeList extends Component {
   componentWillMount() {
-    this.props.dispatch({ type: 'employee/employeesFetch' });
+   // this.props.dispatch({ type: 'employee/employeesFetch' });
     this.createDataSource(this.props);
   }
 
