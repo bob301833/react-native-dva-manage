@@ -1,5 +1,6 @@
 import firebase from 'firebase';
 import { Actions } from 'react-native-router-flux';
+import { signIn, getList } from '../services/employee';
 
 const INITIAL_STATE = {
   email: '',
@@ -42,25 +43,17 @@ const authModel = {
   },
 
   effects: {
-    *isLogin({ payload }, { select }) {
-      const user = yield select(({ auth }) => auth.user);
-      if (user) {
-        Actions.main();
-      } else {
-        Actions.auth();
-      }
-    },
     *loginUser({ payload }, { call, put, select }) {
       const email = yield select(({ auth }) => auth.email);
       const password = yield select(({ auth }) => auth.password);
 
       yield put({ type: 'login_user' });
-      const user = yield call(signIn, email, password);
-      if (user.uid) {
+      const { user, err } = yield call(signIn, email, password);
+      if (user) {
         yield put({ type: 'login_user_successs', payload: user });
         Actions.main();
-      } else {
-        yield put({ type: 'login_user_fail' });
+      } else if (err) {
+        yield put({ type: 'login_user_fail', payload: err });
       }
     },
 
@@ -79,31 +72,10 @@ const authModel = {
     login_user_successs(state, { payload: user }) {
       return { ...state, ...INITIAL_STATE, user };
     },
-    login_user_fail(state) {
-      return { ...state, error: 'Authentication Failed', password: '', loading: false };
+    login_user_fail(state, { payload: err }) {
+      return { ...state, error: err.message, password: '', loading: false };
     }
   },
-};
-const signIn = (email, password) => {
-  return firebase.auth().signInWithEmailAndPassword(email, password)
-    .then(user => user)
-    .catch(() => createUser(email, password));
-};
-const createUser = (email, password) => {
-  return firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then(user => user)
-    .catch(() => { return 'login_user_fail'; });
-};
-
-const getList = (currentUserUid, cb) => {
-  const ref = firebase.database().ref(`/users/${currentUserUid}/employees`);
-  const handler = snapshot => {
-      cb(snapshot.val());
-  };
-  ref.on('value', handler);
-  return () => {
-    ref.off('value', handler);
-  };
 };
 
 export default authModel;

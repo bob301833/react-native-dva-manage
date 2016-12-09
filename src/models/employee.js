@@ -1,5 +1,3 @@
-import firebase from 'firebase';
-
 const employeeModel = {
 
   namespace: 'employee',
@@ -13,12 +11,9 @@ const employeeModel = {
   },
 
   effects: {
-    *employeesFetch({ payload }, { call, put }) {
-      const { currentUser } = firebase.auth();
-      const employees = yield call(fetchEmployeesData, currentUser.uid);
-      yield put({ type: 'employee_fetch_success', payload: employees });
+    *employeesFetch({ payload }, { put }) {
+      yield put({ type: 'employee_fetch_success', payload });
     },
-
   },
 
   reducers: {
@@ -27,13 +22,6 @@ const employeeModel = {
     },
   },
 };
-const fetchEmployeesData = (currentUserUid) => {
-      return new Promise((resolve) => {
-        firebase.database().ref(`/users/${currentUserUid}/employees`)
-          .on('value', (snapshot) => {
-            resolve(snapshot.val());
-        });
-      });
-};
+
 
 export default employeeModel;
