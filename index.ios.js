@@ -4,7 +4,7 @@ import dva from 'dva/mobile';
 import authModel from './src/models/auth';
 import employeeModel from './src/models/employee';
 import employeeformModel from './src/models/employeeform';
-import Router from './src/Router';
+import Router from './src/router';
 
 const app = dva();
 
